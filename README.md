@@ -61,3 +61,12 @@ three:
 
 Bubble sort is one of the simplest algorithms for sorting an array of data. 
 
+![Image shows one round of bubblesort](bubblesort.drawio.png)
+
+asdfnasdf
+asdf
+asdf
+asdf
+asdf
+asdf
+asdf
