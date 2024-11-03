@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-//#include <sys/time.h>
+#include <assert.h>
 #include <omp.h>
 
 
@@ -20,7 +20,9 @@ void genDecreasingArray(int *array, long length);
 
 void copyArray(int *source, int *dest, long length);
 void printArray(int *array, long length);
+void checkArrays(int * a1, int* a2, long length);
 int print_error(char *msg);
+
 
 /* main function:
  * gets array length from command line args, allocates a random array of that
@@ -44,8 +46,7 @@ int main(int argc, char **argv) {
         option = atoi(argv[3]);
     }
 
-    //srand(10);  //uncomment this line to make random values predictably the same each run
-    srand(time(NULL));  //uncomment this line to have random arrays every run
+    srand(time(NULL));  // ensures different random arrays each time
 
 
     //generate random array of elements of specified length
@@ -62,6 +63,8 @@ int main(int argc, char **argv) {
     else {
         genDecreasingArray(sarray, length);
     }
+
+    // Copy the original array so we have two versions for serial and parallel sorting
     copyArray(sarray, parray, length);
 
     //print out array before sort
@@ -83,19 +86,26 @@ int main(int argc, char **argv) {
         printArray(sarray, length);
     }
 
-    tstart = omp_get_wtime();
-    parallel_bubblesort(parray, length); //calls sort
-    tend = omp_get_wtime();
-    time = tend - tstart;
-    printf("Run Time for Parallel Bubblesort is %g\n", time);
+    // TODO: Uncomment this code when you have implemented parallel_bubblesort
+    // tstart = omp_get_wtime();
+    // parallel_bubblesort(parray, length); //calls sort
+    // tend = omp_get_wtime();
+    // time = tend - tstart;
+    // printf("Run Time for Parallel Bubblesort is %g\n", time);
 
-    //print out array after sort
-    if (verbose) {
-        printf("result after parallel bubblesort:\n");
-        printArray(parray, length);
-    }
-    free(sarray); //free memory
-    free(parray); //free memory
+    // //print out array after sort
+    // if (verbose) {
+    //     printf("result after parallel bubblesort:\n");
+    //     printArray(parray, length);
+    // }
+
+    // // check if both arrays are sorted exactly the same
+    // checkArrays(sarray, parray, length);
+    // TODO: End of section to uncomment!
+
+    // free dynamic arrays
+    free(sarray);
+    free(parray);
 
     return 0;
 }
@@ -106,7 +116,8 @@ int main(int argc, char **argv) {
  * moving the data into increasing (or non-decreasing) order.
  */
 void serial_bubblesort(int *array, long length) {
-    int j, temp;
+    long j;
+    int temp;
     char changes = 1;
 
     while (changes) {
@@ -127,86 +138,81 @@ void serial_bubblesort(int *array, long length) {
  * TODO: Complete this function, including this comment
  */
 void parallel_bubblesort(int *array, long length) {
-    char changes = 1;
-    int temp;
 
-    while (changes) {
-        changes = 0;
-        //#pragma omp parallel for private(temp) //reduction(+:changes)
-        for (int j = 0; j < length - 1; j+=2) {
-            if (array[j] > array[j+1]) {
-                changes += 1;
-                temp = array[j];
-                array[j] = array[j+1];
-                array[j+1] = temp;
-            }
-        }
-        //#pragma omp parallel for private(temp) // reduction(+:changes)
-        for (int j = 1; j < length - 1; j+=2) {
-            if (array[j] > array[j+1]) {
-                changes = +1;
-                temp = array[j];
-                array[j] = array[j+1];
-                array[j+1] = temp;
-
-            }
-        }
-    }
 }
 
 
-/* helper function: genRandomArray
- * fills an input array of specified length (length) with random 
+// --------------------------------------------------------------------
+// Helper functions
+
+
+/* 
+ * Fills an input array of specified length (length) with random 
    values from 0 to MAX-1
 */
 void genRandomArray(int *array, long length) {
-    int i;
+    long i;
     for (i = 0; i < length; i++) {
         array[i] = (int)rand();
     }
 }
 
-/* helper function: genIncreasingArray
- * fills an input array of specified length (length) with values
+/* 
+ * Fills an input array of specified length (length) with values
  from 0 to length - 1, increasing order
 */
 void genIncreasingArray(int *array, long length) {
-    int i;
+    long i;
     for (i = 0; i < length; i++) {
         array[i] = i;
     }
 }
-/* helper function: genDecreasingArray
- * fills an input array of specified length (length) with values
+
+/* 
+ * Fills an input array of specified length (length) with values
  from length to 1, decreasing order
 */
 void genDecreasingArray(int *array, long length) {
-    int i;
+    long i;
     for (i = 0; i < length; i++) {
         array[i] = length - i;
     }
 }
 
-
-/* helper function: printArray
- * prints out all the values in the input array separated by spaces
+/* 
+ * Prints out all the values in the input array separated by spaces
  */
 void printArray(int *array, long length) {
-    int i;
+    long i;
     for (i = 0; i < length; i++) {
         printf("%10d\n", array[i]);
     }
     printf("\n");
 }
 
+
+/* 
+ * Copies the contents of source into dest, up to length
+ */
 void copyArray(int *source, int *dest, long length) {
     for (int i = 0; i < length; i++) {
         dest[i] = source[i];
     }
 }
 
+/*
+ * Takes in two arrays and their length and it checks if the array values are
+ * the same at every position.
+ */
+void checkArrays(int * a1, int* a2, long length) {
+    for (long i = 0; i < length; i++){
+        assert(a1[i] == a2[i]);
+    }
+}
 
-/*error handling function: prints out error message*/
+/*
+ * Error handling function: prints out error message and quits the program
+ */
 int print_error(char *msg) {
     fprintf(stderr, "%s\n", msg);
     exit(2);
