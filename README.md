@@ -118,7 +118,7 @@ while there are changes to A do
             swap A[j] and A[j+1]
 ```
 
-* Create a new Markdown file: `REPORT.mb` and set it up with sections for each
+* Create a new Markdown file: `REPORT.md` and set it up with sections for each
 step. Use good style and formatting (headers, tables, etc) to record and report
 on the points described throughout this assignment.
 
