@@ -142,9 +142,12 @@ from the two Bubblesort functions
     - For each combination of array size and ordering, run the program 5 times
     - Record the times for Serial Bubblesort and Parallel Bubblesort
     - Compute the average of the 5 runs
-    - Describe your testing process in your report. Present the results in a 
-    readable format (a table or a chart), and write a one-paragraph discussion
-    of the meaning of the results.
+    - Include a paragraph in your report describing how you ran these tests
+    - Prepare a single table or chart for all parts of this assignment (you only need
+            to do the tests on each version of the program once)
+    - Report only the 5-run average, not the individual run times
+    - In this section of the report, write a one to two-paragraph discussion summarizing what
+      you see in the results for this part
 
 ### Step 2: Trying the parallel loop pattern
 
@@ -160,11 +163,11 @@ as you did for the previous step. Record the test runs you tried and include
 them in your report.
 
 * Prepare to collect timing information by removing all debugging print statements
-from the two Bubblesort functions
+from the `parallel_bubblesort` function
 
-* Run a series of test runs of the program, as described in the previous section,
-record the results, and include them in your final report.
-
+* Collect data on the running time of the new `parallel_bubblesort`, running the same tests
+  as you did in the previous section
+* As in the previous section, include a paragraph that describes how you ran the tests, add the 5-run averages for this new version to your table or chart, and include a paragraph that summarizes the results you see
 * Did the parallel loop help significantly or did it not? Explain why or why not
 in your report.
 
@@ -194,7 +197,7 @@ gets set to 1 if even one of the local copies is a one.)
 * Be sure to pause and run small tests to make sure that you haven't introduced
 any bugs into the program.
 
-* Repeat the timing tests you ran for the previous two sections, recording the results.
+* Repeat the timing tests for the newest version of `parallel_bubblesort`, following the same model as the previous sections
 
 
 
