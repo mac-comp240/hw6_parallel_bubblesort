@@ -18,6 +18,9 @@ Finally, you will summarize and explain your results in a report written as a Ma
     - Clear presentation of results from Step 1 (3 points)
     - Clear presentation of results from Step 2 (3 points)
     - Clear presentation of results from Step 3 (3 points)
+    - A list of known bugs or issues in the code
+    - What challenges you faced while completing the assignment
+    - What you learned through completing this assignment
 * `bubblesort.c` (13 points)
    - Descriptive comment with your name at the top, comment on `parallel_bubblesort`,
    good coding style (2 points)
